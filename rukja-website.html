@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RukJa — India's first UPI autopay manager. Find and control all your hidden autopay mandates in one place.">
+<title>RukJa — Apne Autopay Ka Asli Boss</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --saffron:#E8540E;--saffron-dk:#C94A0C;--saffron-lt:#FFF0E8;
+  --navy:#1E3A5F;--navy-dk:#0F2340;
+  --cream:#FDFAF6;--warm:#F1EDE8;
+  --text:#1A1A2A;--muted:#64748B;--border:#E2D9CF;
+  --green:#1A7A4A;--green-lt:#E8F5EE;
+  --red:#DC2626;--red-lt:#FEF2F2;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* layout */
+.container{max-width:1080px;margin:0 auto;padding:0 28px}
+section{padding:88px 0}
+
+/* type */
+.baloo{font-family:'Baloo 2',sans-serif}
+.eyebrow{font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--saffron)}
+.section-title{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(26px,4vw,42px);color:var(--navy);line-height:1.15;margin-bottom:14px}
+.section-sub{font-size:17px;color:var(--muted);line-height:1.75;max-width:540px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-family:'Baloo 2',sans-serif;font-size:12px;font-weight:700}
+.badge-green{background:var(--green-lt);color:var(--green)}
+.badge-red{background:var(--red-lt);color:var(--red)}
+.badge-orange{background:var(--saffron-lt);color:var(--saffron-dk)}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .3s}
+nav.scrolled{background:rgba(253,250,246,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;max-width:1080px;margin:0 auto}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:22px;color:var(--navy)}
+.nav-logo-mark{width:34px;height:34px;background:var(--saffron);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#fff;font-family:'Baloo 2',sans-serif}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .15s}
+.nav-links a:hover{color:var(--navy)}
+@media(max-width:700px){.nav-links{display:none}}
+
+/* hero */
+.hero{background:var(--navy-dk);padding:140px 0 88px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:0;right:0;width:55%;height:100%;background:radial-gradient(ellipse at 70% 40%,rgba(232,84,14,.1) 0%,transparent 65%);pointer-events:none}
+.hero-inner{display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:center}
+@media(max-width:860px){.hero-inner{grid-template-columns:1fr}.hero-mockup{display:none}}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(232,84,14,.14);border:1px solid rgba(232,84,14,.28);border-radius:20px;padding:5px 14px;margin-bottom:22px}
+.hero-eyebrow span{font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:700;color:var(--saffron);letter-spacing:.1em;text-transform:uppercase}
+.hero h1{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(38px,5.5vw,68px);line-height:1.08;letter-spacing:-.02em;color:#fff;margin-bottom:10px}
+.hero h1 em{color:var(--saffron);font-style:normal}
+.hero-sub-hindi{font-family:'Baloo 2',sans-serif;font-weight:600;font-size:14px;color:rgba(255,255,255,.4);letter-spacing:.06em;margin-bottom:18px}
+.hero p{font-size:17px;color:rgba(255,255,255,.68);line-height:1.75;max-width:500px}
+
+/* phone mockup */
+.phone-shell{width:100%;background:#111827;border:1.5px solid rgba(255,255,255,.08);border-radius:36px;padding:14px;box-shadow:0 32px 80px rgba(0,0,0,.55)}
+.phone-notch{width:72px;height:7px;background:rgba(255,255,255,.07);border-radius:4px;margin:0 auto 14px}
+.phone-screen{background:#0B1628;border-radius:24px;overflow:hidden;padding:14px}
+.phone-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.phone-topbar-name{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:14px;color:#fff}
+.phone-topbar-avatar{width:28px;height:28px;border-radius:8px;background:var(--saffron);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;font-family:'Baloo 2',sans-serif}
+.phone-hero-card{background:linear-gradient(135deg,var(--saffron),var(--saffron-dk));border-radius:14px;padding:14px;margin-bottom:10px}
+.phone-hero-card .lbl{font-size:10px;color:rgba(255,255,255,.75);font-weight:600;margin-bottom:4px;font-family:'Baloo 2',sans-serif}
+.phone-hero-card .num{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:30px;color:#fff;line-height:1}
+.phone-hero-card .sub{font-size:10px;color:rgba(255,255,255,.65);margin-top:3px}
+.phone-row{background:rgba(255,255,255,.05);border-radius:10px;padding:9px 10px;display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.phone-row-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.phone-row-name{font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:700;color:#fff}
+.phone-row-amt{font-size:10px;color:rgba(255,255,255,.45);margin-top:1px}
+.phone-row-pill{margin-left:auto;font-size:9px;font-weight:700;padding:3px 7px;border-radius:6px;font-family:'Baloo 2',sans-serif;white-space:nowrap}
+
+/* ticker */
+.ticker{background:var(--saffron);padding:11px 0;overflow:hidden}
+.ticker-wrap{display:flex;animation:tick 28s linear infinite;width:max-content}
+.ticker-item{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:13px;color:#fff;padding:0 28px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.ticker-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.45);flex-shrink:0}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* stats bar */
+.stats-bar{background:var(--navy)}
+.stats-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.08)}
+@media(max-width:700px){.stats-inner{grid-template-columns:1fr 1fr}}
+.stat-cell{background:var(--navy);padding:40px 28px;text-align:center}
+.stat-n{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:44px;color:#fff;line-height:1;margin-bottom:6px}
+.stat-n em{color:var(--saffron);font-style:normal}
+.stat-l{font-size:13px;color:rgba(255,255,255,.48);line-height:1.5}
+
+/* problem */
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:860px){.problem-grid{grid-template-columns:1fr}}
+.prob-card{background:#fff;border-radius:20px;padding:28px;border:1px solid var(--border);position:relative;overflow:hidden}
+.prob-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--saffron)}
+.prob-card .emoji{font-size:32px;margin-bottom:14px;display:block}
+.prob-card h3{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:18px;color:var(--navy);margin-bottom:8px}
+.prob-card p{font-size:14px;color:var(--muted);line-height:1.6}
+.prob-card .callout{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:32px;color:var(--saffron);margin:10px 0 4px}
+
+/* how it works */
+.how-section{background:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:860px){.steps{grid-template-columns:1fr}}
+.step{padding:28px;background:var(--cream);border-radius:20px;border:1px solid var(--border);position:relative}
+.step-n{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:52px;color:var(--saffron);opacity:.12;position:absolute;top:14px;right:18px;line-height:1}
+.step-ico{width:48px;height:48px;background:var(--saffron-lt);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px}
+.step h3{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:18px;color:var(--navy);margin-bottom:6px}
+.step p{font-size:14px;color:var(--muted);line-height:1.65}
+
+/* features */
+.features-section{background:var(--cream)}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:700px){.features-grid{grid-template-columns:1fr}}
+.feat{background:#fff;border-radius:16px;padding:24px;border:1px solid var(--border);display:flex;align-items:flex-start;gap:16px}
+.feat-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.feat h3{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:16px;color:var(--navy);margin-bottom:4px}
+.feat p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* pricing */
+.pricing-section{background:var(--navy-dk);padding:88px 0}
+.pricing-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media(max-width:860px){.pricing-wrap{grid-template-columns:1fr}}
+.pricing-left h2{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(26px,4vw,42px);color:#fff;line-height:1.15;margin-bottom:12px}
+.pricing-left p{font-size:16px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:24px}
+.pricing-detail{display:flex;flex-direction:column;gap:12px}
+.pricing-row{display:flex;align-items:center;gap:12px;font-size:15px;color:rgba(255,255,255,.7)}
+.pricing-row-icon{width:22px;height:22px;border-radius:50%;background:rgba(26,122,74,.25);border:1px solid rgba(26,122,74,.4);display:flex;align-items:center;justify-content:center;font-size:11px;color:#4ADE80;flex-shrink:0}
+.pricing-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:40px;text-align:center}
+.price-tag{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:64px;color:#fff;line-height:1}
+.price-tag sup{font-size:28px;vertical-align:top;margin-top:10px}
+.price-note{font-size:13px;color:rgba(255,255,255,.35);margin:6px 0 20px}
+.price-divider{height:1px;background:rgba(255,255,255,.08);margin:20px 0}
+.price-sub-tag{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:32px;color:var(--saffron)}
+.price-sub-note{font-size:13px;color:rgba(255,255,255,.4);margin-top:4px}
+
+/* scam */
+.scam-section{background:var(--cream)}
+.scam-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+@media(max-width:860px){.scam-layout{grid-template-columns:1fr}}
+.scam-card{background:#fff;border-radius:14px;padding:18px 20px;border:1px solid var(--border);display:flex;align-items:flex-start;gap:14px;margin-bottom:10px}
+.sev{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.sev.high{background:var(--red)}.sev.med{background:#F59E0B}
+.scam-title{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:15px;color:var(--navy);margin-bottom:3px}
+.scam-desc{font-size:13px;color:var(--muted);line-height:1.55}
+
+/* languages */
+.lang-section{background:#fff}
+.lang-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.lang-tile{background:var(--cream);border:1.5px solid var(--border);border-radius:12px;padding:12px 20px;text-align:center}
+.lang-tile .native{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:20px;color:var(--navy)}
+.lang-tile .english{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* faq */
+.faq-section{background:var(--cream)}
+.faq-wrap{max-width:680px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-q{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:16px;color:var(--navy);padding:18px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:14px;user-select:none}
+.faq-q:hover{color:var(--saffron)}
+.faq-ico{font-size:18px;color:var(--saffron);transition:transform .25s;flex-shrink:0;line-height:1}
+.faq-ico.open{transform:rotate(45deg)}
+.faq-a{font-size:15px;color:var(--muted);line-height:1.7;padding-bottom:18px;display:none}
+.faq-a.open{display:block}
+
+/* footer */
+footer{background:var(--navy-dk);padding:56px 0 28px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+@media(max-width:700px){.footer-top{grid-template-columns:1fr 1fr}}
+.footer-brand-name{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:22px;color:#fff;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.footer-brand-mark{width:30px;height:30px;background:var(--saffron);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;font-family:'Baloo 2',sans-serif}
+.footer-brand p{font-size:13px;color:rgba(255,255,255,.35);line-height:1.7;max-width:240px}
+.footer-col h4{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:14px}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.4);margin-bottom:8px;transition:color .15s}
+.footer-col a:hover{color:rgba(255,255,255,.8)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.25)}
+.trust-row{display:flex;gap:8px;flex-wrap:wrap}
+.trust-badge{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,.28);display:flex;align-items:center;gap:4px}
+
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="nav-logo-mark">₹</div>
+      RukJa
+    </div>
+    <div class="nav-links">
+      <a href="#how">Kaise kaam karta hai</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#languages">Languages</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="badge badge-orange" style="font-size:12px;padding:6px 14px">Coming Soon</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow"><span>🇮🇳 India's First UPI Autopay Manager</span></div>
+        <h1>Apne Autopay<br>Ka <em>Asli Boss</em>.</h1>
+        <p class="hero-sub-hindi baloo">रुकजा — हर महीने कितना kat raha hai, jaano.</p>
+        <p>Aapke bank account se har mahine automatically paisa katta hai — OTT, insurance, DTH, grocery. Aur aapko pata bhi nahi. RukJa sab ek jagah dikhata hai, aur poora control deta hai.</p>
+      </div>
+
+      <!-- Phone mockup -->
+      <div class="hero-mockup">
+        <div class="phone-shell">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-topbar">
+              <div>
+                <div style="font-size:10px;color:rgba(255,255,255,.4);font-family:'Baloo 2',sans-serif">नमस्कार 🙏</div>
+                <div class="phone-topbar-name">राजेश भाई!</div>
+              </div>
+              <div class="phone-topbar-avatar">र</div>
+            </div>
+            <div class="phone-hero-card">
+              <div class="lbl">पिछले 6 महीने में कट गया</div>
+              <div class="num">₹<span id="ctr">0</span></div>
+              <div class="sub">8 active autopay · अलग-अलग apps से</div>
+            </div>
+            <div class="phone-row">
+              <div class="phone-row-icon" style="background:#FEF2F2">📺</div>
+              <div><div class="phone-row-name">JioCinema</div><div class="phone-row-amt">₹149/माह · PhonePe</div></div>
+              <div class="phone-row-pill badge-green" style="margin-left:auto">Active</div>
+            </div>
+            <div class="phone-row">
+              <div class="phone-row-icon" style="background:#FFF0E8">🎬</div>
+              <div><div class="phone-row-name">Hotstar</div><div class="phone-row-amt">₹299/माह · GPay</div></div>
+              <div class="phone-row-pill" style="background:#FEF2F2;color:#DC2626;margin-left:auto">⚠️ कल</div>
+            </div>
+            <div class="phone-row">
+              <div class="phone-row-icon" style="background:#EFF6FF">🛡️</div>
+              <div><div class="phone-row-name">HDFC Insurance</div><div class="phone-row-amt">₹850/माह · BHIM</div></div>
+              <div class="phone-row-pill badge-green" style="margin-left:auto">Active</div>
+            </div>
+            <div class="phone-row">
+              <div class="phone-row-icon" style="background:#F5F3FF">🛒</div>
+              <div><div class="phone-row-name">Amazon Prime</div><div class="phone-row-amt">₹179/माह · Paytm</div></div>
+              <div class="phone-row-pill badge-orange" style="margin-left:auto">Snoozed</div>
+            </div>
+            <div style="text-align:center;padding:10px 0 2px;font-family:'Baloo 2',sans-serif;font-size:10px;color:rgba(255,255,255,.28)">+4 more mandates</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-wrap" id="ticker">
+    <div class="ticker-item"><span class="ticker-dot"></span>35 crore+ active UPI autopay mandates in India today</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>₹2,430 average monthly drain per user — most of it forgotten</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>8 out of 10 people don't know all their active mandates</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>NPCI processed ₹20,646 Cr in autopay transactions in March 2025</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>RukJa finds all mandates in under 60 seconds</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>35 crore+ active UPI autopay mandates in India today</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>₹2,430 average monthly drain per user — most of it forgotten</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>8 out of 10 people don't know all their active mandates</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>NPCI processed ₹20,646 Cr in autopay transactions in March 2025</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>RukJa finds all mandates in under 60 seconds</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-cell reveal"><div class="stat-n">35<em>Cr+</em></div><div class="stat-l">Active UPI autopay mandates in India</div></div>
+    <div class="stat-cell reveal"><div class="stat-n"><em>₹</em>2,430</div><div class="stat-l">Average monthly drain per UPI user</div></div>
+    <div class="stat-cell reveal"><div class="stat-n"><em>₹4</em></div><div class="stat-l">RukJa trial — less than one chai</div></div>
+    <div class="stat-cell reveal"><div class="stat-n"><em>60</em>s</div><div class="stat-l">Time to find all your mandates</div></div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section style="background:var(--cream)">
+  <div class="container">
+    <div style="margin-bottom:48px">
+      <div class="eyebrow" style="margin-bottom:10px">Samasyaa</div>
+      <h2 class="section-title">Pata bhi nahi aur kat raha hai.</h2>
+      <p class="section-sub">Har subscription ne ek autopay mandate banaya. Aur zyaadatar toh aap bhool hi gaye.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="prob-card reveal">
+        <span class="emoji">😤</span>
+        <h3>Bank statement nahi padhte</h3>
+        <div class="callout">₹850</div>
+        <p>HDFC Life insurance autopay 2022 se chal raha tha. User ko yaad bhi nahi tha. RukJa ne 8 second mein dhundha.</p>
+      </div>
+      <div class="prob-card reveal">
+        <span class="emoji">😱</span>
+        <h3>Trial se subscription ban gaya</h3>
+        <div class="callout">₹299</div>
+        <p>"Maine sirf 1 mahine ka trial liya tha" — 2.3 crore Indians ne Hotstar trial cancel karna bhool gaye.</p>
+      </div>
+      <div class="prob-card reveal">
+        <span class="emoji">🤯</span>
+        <h3>Teen apps — ek mandate kahan hai?</h3>
+        <div class="callout">15 min</div>
+        <p>GPay, PhonePe, Paytm — mandates bikhar gaye hain. Ek cancel karne mein 3 apps aur 15 minute lagte hain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="container">
+    <div style="margin-bottom:48px;text-align:center">
+      <div class="eyebrow" style="margin-bottom:10px">Kaise kaam karta hai</div>
+      <h2 class="section-title">Teen kadam. Poora control.</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-n">1</div>
+        <div class="step-ico">📱</div>
+        <h3>Install karein — SMS scan hoga</h3>
+        <p>RukJa aapke bank SMS padhta hai aur 60 seconds mein saare active autopay mandates dhundh leta hai. Koi manual entry nahi.</p>
+        <div style="margin-top:14px"><span class="badge badge-orange">Automatic · 60 seconds</span></div>
+      </div>
+      <div class="step reveal">
+        <div class="step-n">2</div>
+        <div class="step-ico">🔓</div>
+        <h3>₹4 mein poora hisaab dekhein</h3>
+        <p>Sirf ₹4 mein unlock karein — kaunsa mandate kab kaata hai, 6 mahine mein kul kitna gaya, aur kya band karna chahiye.</p>
+        <div style="margin-top:14px"><span class="badge badge-orange">Sirf ₹4</span></div>
+      </div>
+      <div class="step reveal">
+        <div class="step-n">3</div>
+        <div class="step-ico">✅</div>
+        <h3>Pause, snooze, ya band karein</h3>
+        <p>Ek tap mein koi bhi mandate rok do ya band karo. RukJa seedha aapke UPI app mein le jaata hai — koi manual navigation nahi.</p>
+        <div style="margin-top:14px"><span class="badge badge-green">Instant control</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="container">
+    <div style="margin-bottom:48px">
+      <div class="eyebrow" style="margin-bottom:10px">Features</div>
+      <h2 class="section-title">Sab kuch ek jagah.</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feat reveal">
+        <div class="feat-ico" style="background:#FFF0E8">🔍</div>
+        <div>
+          <h3>SMS-based mandate detection</h3>
+          <p>Bank SMS se automatically saare active mandates dhundhe jaate hain. HDFC, ICICI, SBI, Axis — sab banks support karta hai.</p>
+        </div>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ico" style="background:#E8F5EE">🔔</div>
+        <div>
+          <h3>24-hour advance alerts</h3>
+          <p>Har debit se 24 ghante pehle notification — taki aap ready rahein. Ek tap se mandate pause kar sakte hain.</p>
+        </div>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ico" style="background:#EFF6FF">⏸️</div>
+        <div>
+          <h3>Pause, snooze, cancel</h3>
+          <p>Koi bhi mandate 1, 3, ya 6 mahine ke liye snooze karein, ya directly band karein — RukJa UPI app mein seedha le jaata hai.</p>
+        </div>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ico" style="background:#FEF3C7">🤝</div>
+        <div>
+          <h3>AI Saathi — Hindi mein</h3>
+          <p>Koi bhi financial sawaal poochho — UPI, mandates, savings, ya scams ke baare mein. Hindi mein jawab milega.</p>
+        </div>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ico" style="background:#FEF2F2">🚨</div>
+        <div>
+          <h3>Local scam alerts</h3>
+          <p>Aapke sheher mein chal rahe latest financial frauds aur scams ke baare mein real-time alerts — andar hi andar app mein.</p>
+        </div>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-ico" style="background:#F5F3FF">📚</div>
+        <div>
+          <h3>Financial literacy hub</h3>
+          <p>UPI basics, FD vs RD, government schemes — simple Hindi mein samjhao. Audio mode bhi available hai.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <div class="pricing-wrap">
+      <div class="pricing-left reveal">
+        <div class="eyebrow" style="color:var(--saffron);margin-bottom:12px">Pricing</div>
+        <h2>Chai se bhi sasta.</h2>
+        <p>Ek baar ₹4 do — aur ₹4,999 tak bachao saal mein. Phir sirf ₹39 har 28 din, kabhi bhi cancel karo.</p>
+        <div class="pricing-detail">
+          <div class="pricing-row"><span class="pricing-row-icon">✓</span>Saare mandates ek jagah dekhein</div>
+          <div class="pricing-row"><span class="pricing-row-icon">✓</span>24-hour advance debit alerts</div>
+          <div class="pricing-row"><span class="pricing-row-icon">✓</span>Pause, snooze, cancel controls</div>
+          <div class="pricing-row"><span class="pricing-row-icon">✓</span>AI Saathi — Hindi mein jawab</div>
+          <div class="pricing-row"><span class="pricing-row-icon">✓</span>Scam alerts aur financial tips</div>
+          <div class="pricing-row"><span class="pricing-row-icon">✓</span>8 Indian languages supported</div>
+          <div class="pricing-row"><span class="pricing-row-icon">✓</span>Kabhi bhi cancel — koi penalty nahi</div>
+        </div>
+      </div>
+      <div class="pricing-card reveal">
+        <div style="font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--saffron);margin-bottom:12px">Trial Entry</div>
+        <div class="price-tag"><sup>₹</sup>4</div>
+        <div class="price-note">One-time · unlock karo, dekho</div>
+        <div class="price-divider"></div>
+        <div style="font-size:12px;color:rgba(255,255,255,.35);margin-bottom:8px">Phir har 28 din</div>
+        <div class="price-sub-tag">₹39</div>
+        <div class="price-sub-note">UPI AutoPay via your existing app<br>Kabhi bhi cancel karo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCAM ALERTS -->
+<section class="scam-section" id="scam">
+  <div class="container">
+    <div class="scam-layout">
+      <div>
+        <div class="eyebrow" style="margin-bottom:10px">Scam Alerts</div>
+        <h2 class="section-title">Fraud se<br>bachao bhi karta hai.</h2>
+        <p class="section-sub">RukJa sirf mandates nahi track karta — aapke sheher ke latest financial scams bhi alert karta hai. Real-time updates, Hindi mein.</p>
+      </div>
+      <div>
+        <div class="scam-card reveal">
+          <div class="sev high"></div>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+              <span class="badge badge-red">High Risk</span>
+              <span style="font-size:11px;color:var(--muted)">Agra · Lucknow · Patna</span>
+            </div>
+            <div class="scam-title">Fake KYC Update Call Scam</div>
+            <div class="scam-desc">Bank bankar call aati hai — OTP maangte hain. Bank kabhi OTP nahi maangta. Call kaatein, seedha branch jayein.</div>
+          </div>
+        </div>
+        <div class="scam-card reveal">
+          <div class="sev med"></div>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+              <span class="badge" style="background:#FEF3C7;color:#92400E">Medium Risk</span>
+              <span style="font-size:11px;color:var(--muted)">Pan India</span>
+            </div>
+            <div class="scam-title">Fake Investment App — WhatsApp par</div>
+            <div class="scam-desc">Pehle profit dikhate hain, phir sab le jaate hain. Koi bhi APK link par click na karein.</div>
+          </div>
+        </div>
+        <div class="scam-card reveal">
+          <div class="sev med"></div>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+              <span class="badge" style="background:#FEF3C7;color:#92400E">Medium Risk</span>
+              <span style="font-size:11px;color:var(--muted)">Tier 2/3 Cities</span>
+            </div>
+            <div class="scam-title">SIM Block Fraud Call</div>
+            <div class="scam-desc">"Aapka SIM block hone wala hai" — Telecom company aisa call nahi karti. Seedha 198 par complaint karein.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LANGUAGES -->
+<section class="lang-section" id="languages">
+  <div class="container">
+    <div class="eyebrow" style="margin-bottom:10px">Vernacular Support</div>
+    <h2 class="section-title">Aapki bhasha mein.</h2>
+    <p class="section-sub">RukJa Bharat ke liye bana hai — sirf English-walon ke liye nahi. Phase 1 mein 3 languages, Phase 2 mein 8.</p>
+    <div class="lang-grid">
+      <div class="lang-tile reveal">
+        <div class="native">हिंदी</div>
+        <div class="english">Hindi · Phase 1</div>
+      </div>
+      <div class="lang-tile reveal">
+        <div class="native">भोजपुरी</div>
+        <div class="english">Bhojpuri · Phase 1</div>
+      </div>
+      <div class="lang-tile reveal">
+        <div class="native">मराठी</div>
+        <div class="english">Marathi · Phase 1</div>
+      </div>
+      <div class="lang-tile reveal" style="opacity:.55">
+        <div class="native">ਪੰਜਾਬੀ</div>
+        <div class="english">Punjabi · Phase 2</div>
+      </div>
+      <div class="lang-tile reveal" style="opacity:.55">
+        <div class="native">ગુજરાતી</div>
+        <div class="english">Gujarati · Phase 2</div>
+      </div>
+      <div class="lang-tile reveal" style="opacity:.55">
+        <div class="native">తెలుగు</div>
+        <div class="english">Telugu · Phase 2</div>
+      </div>
+      <div class="lang-tile reveal" style="opacity:.55">
+        <div class="native">தமிழ்</div>
+        <div class="english">Tamil · Phase 2</div>
+      </div>
+      <div class="lang-tile reveal" style="opacity:.55">
+        <div class="native">राजस्थानी</div>
+        <div class="english">Rajasthani · Phase 2</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:40px">
+      <div class="eyebrow" style="margin-bottom:10px">FAQ</div>
+      <h2 class="section-title">Sawaal? Jawab yahan hai.</h2>
+    </div>
+    <div class="faq-wrap">
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">Kya RukJa mera UPI PIN ya bank password maangta hai?<span class="faq-ico">+</span></div>
+        <div class="faq-a">Bilkul nahi. RukJa sirf aapke bank SMS padhta hai — jo pehle se aapke phone par hain. Koi password, koi credentials, koi OTP share karne ki zaroorat nahi. Saara data aapke phone par hi rehta hai — kuch bhi bahar nahi jaata.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">RukJa kaunse banks aur UPI apps ke mandates detect karta hai?<span class="faq-ico">+</span></div>
+        <div class="faq-a">RukJa bank SMS scan karta hai — HDFC, ICICI, SBI, Axis, Kotak, PNB, aur 30+ other banks support karta hai. UPI app chahे GPay ho, PhonePe ho, ya Paytm — mandate detect hoga kyunki bank SMS bhejta hai, UPI app nahi.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">Mandate cancel karne se kya subscription band ho jaata hai?<span class="faq-ico">+</span></div>
+        <div class="faq-a">Sirf automatic payment rukti hai — merchant ki service band nahi hoti. Jaise Hotstar ka UPI mandate cancel karo, toh Hotstar agle mahine apne aap nahi kaatega. Lekin Hotstar account tabhi band hoga jab aap unke app par seedha cancel karein. RukJa yeh baat cancel se pehle clearly batata hai.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">RukJa ka subscription ₹39 kabhi bhi cancel ho sakta hai?<span class="faq-ico">+</span></div>
+        <div class="faq-a">Haan. Profile section mein anytime cancel kar sakte hain — koi penalty nahi, koi sawaal nahi. Current 28-day cycle khatam hone tak access milta rehega. Aur agar cancel karna bhi chaho toh pehle ek free month offer karte hain.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">iOS par kab aayega?<span class="faq-ico">+</span></div>
+        <div class="faq-a">Abhi sirf Android. SMS reading ke liye Android zaroori hai — iOS par SMS access nahi milta same tarike se. iOS version ki planning hai — timeline announce karenge.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="faq(this)">Kya RukJa offline bhi kaam karta hai?<span class="faq-ico">+</span></div>
+        <div class="faq-a">Haan. Mandate data phone par locally store hota hai. Internet na ho tab bhi saare mandates dekh sakte hain. Sync tab hota hai jab connection aata hai. 2G connections par bhi smoothly kaam karta hai.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-name">
+          <div class="footer-brand-mark">₹</div>
+          RukJa
+        </div>
+        <p>India's first UPI autopay manager. Tier 2, Tier 3, aur village India ke liye bana — real Bharat ke liye.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#how">Kaise kaam karta hai</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#languages">Languages</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+        <a href="mailto:hello@rukja.in">hello@rukja.in</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Refund Policy</a>
+        <a href="#">Grievance Officer</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 RukJa Technologies Pvt. Ltd. · rukja.in</p>
+      <div class="trust-row">
+        <div class="trust-badge">🔒 NPCI Compliant</div>
+        <div class="trust-badge">🇮🇳 DPDP Act 2023</div>
+        <div class="trust-badge">📱 Android App</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 32));
+
+// Hero counter
+(function(){
+  let s=null;
+  function step(ts){
+    if(!s)s=ts;
+    const p=Math.min((ts-s)/2200,1);
+    const e=1-Math.pow(1-p,3);
+    document.getElementById('ctr').textContent=Math.floor(e*14580).toLocaleString('en-IN');
+    if(p<1)requestAnimationFrame(step);
+  }
+  setTimeout(()=>requestAnimationFrame(step),700);
+})();
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*70)}});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// FAQ
+function faq(el){
+  const a=el.nextElementSibling,ico=el.querySelector('.faq-ico'),open=a.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(x=>x.classList.remove('open'));
+  document.querySelectorAll('.faq-ico').forEach(x=>x.classList.remove('open'));
+  if(!open){a.classList.add('open');ico.classList.add('open')}
+}
+</script>
+</body>
+</html>
